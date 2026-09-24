@@ -1,0 +1,536 @@
+{
+    "sigstd": "CCITT-SS7",
+    "database": {
+        "SSN": {
+            "type": "decimal",
+            "value": "243"
+        },
+        "GTADDR": {
+            "type": "phonenumber",
+            "value": "97477920142"
+        },
+        "PROTOC": {
+            "type": "hex",
+            "value": "04000001003201"
+        },
+        "SKEY": {
+            "type": "hex",
+            "value": "00000047"
+        },
+        "SIMKEY": {
+            "type": "phonenumber",
+            "value": "974708992240"
+        },
+        "VLR": {
+            "type": "phonenumber",
+            "value": "860000222010"
+        },
+        "CDNUM": {
+            "type": "phonenumber",
+            "value": "977981773427"
+        },
+        "Time_1": {
+            "type": "hex",
+            "value": "04B0"
+        },
+        "Time": {
+            "type": "hex",
+            "value": "000960"
+        }
+    },
+    "states": [
+        {
+            "name": "IDP",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Point Code",
+                    "mnem": "DPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 1,
+                    "length": 140000
+                },
+                {
+                    "name": "Origination Point Code",
+                    "mnem": "OPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 220000,
+                    "length": 140000
+                },
+                {
+                    "name": "Called Party Address: Signalling Point Code ",
+                    "mnem": "SPC",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 12,
+                    "length": 2
+                },
+                {
+                    "name": "Called Party Address: Subsystem Number",
+                    "mnem": "SSN",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "SSN",
+                    "pos": 14,
+                    "length": 1
+                },
+                {
+                    "name": "Calling Party Address: Signalling Point Code ",
+                    "mnem": "SPC:1",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 17,
+                    "length": 2
+                },
+                {
+                    "name": "Calling Party Address: Subsystem Number",
+                    "mnem": "SSN:1",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "SSN",
+                    "pos": 19,
+                    "length": 1
+                },
+                {
+                    "name": "Calling Party Address: Address information",
+                    "mnem": "N462*N471:1",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "GTADDR",
+                    "pos": 23,
+                    "length": 440000
+                },
+                {
+                    "name": "Originating Transaction ID",
+                    "mnem": "OTXID",
+                    "layer": "MAP_Phase2",
+                    "source": "Global",
+                    "src_field": "1",
+                    "pos": 35,
+                    "length": 4
+                },
+                {
+                    "name": "Dialogue Portion: Context Data",
+                    "mnem": "DP100*DP015*RQ502",
+                    "layer": "MAP_Phase2",
+                    "source": "database",
+                    "src_field": "PROTOC",
+                    "pos": 64,
+                    "length": 7
+                },
+                {
+                    "name": "Invoke: ServiceKey Value",
+                    "mnem": "BCOM*INVT*OP015*SK01",
+                    "layer": "MAP_Phase2",
+                    "source": "database",
+                    "src_field": "SKEY",
+                    "pos": 100,
+                    "length": 4
+                },
+                {
+                    "name": "Invoke: Address signals",
+                    "mnem": "BCOM*INVT*OP015*N2549*CGN7",
+                    "layer": "MAP_Phase2",
+                    "source": "database",
+                    "src_field": "SIMKEY",
+                    "pos": 108,
+                    "length": 6
+                },
+                {
+                    "name": "Invoke: nature of address indicator",
+                    "mnem": "BCOM*INVT*OP015*N2563*LCT6*IAS02",
+                    "layer": "MAP_Phase2",
+                    "source": "database",
+                    "src_field": "VLR",
+                    "pos": 12280000,
+                    "length": 30000
+                },
+                {
+                    "name": "Component Type: BCD Digits",
+                    "mnem": "BCOM*INVT*OP015*N2567*CPB02",
+                    "layer": "MAP_Phase2",
+                    "source": "database",
+                    "src_field": "CDNUM",
+                    "pos": 174,
+                    "length": 6
+                }
+            ],
+            "exports": [],
+            "msg_template": "8335411900098003071404C33501F40DD30000F4000080537679002303A162819E4804000000006B2D282B060700118605010101A020601E80020780A109060700000000000000BE0D280B810930078001058202057B6C67A165020100020100305D800400000000830884119343008421338A08000031178870720097029181BB04800280909C01029F320821436587092143F5BF34098107912143658709219F3607214365870921439F3807912143658700009F39080241701301240100"
+        },
+        {
+            "name": "RRBCSM",
+            "type": "rx",
+            "imports": [],
+            "exports": [],
+            "msg_template": "83354119000980030D110ACB3501F300000000000004C30000F39165818E4804000000004904000000006B292827060700118605010101A01C611A800100A109060700000000000000A203020100A305A2030201006C55A153020100020117304BA049300B800100810100A203800100300B800100810100A203800100300B800100810100A203800100300B800100810100A203800100300B800100810100A2038001003006800100810100",
+            "timeout": 15
+        },
+        {
+            "name": "CONT",
+            "type": "rx",
+            "imports": [],
+            "exports": [
+                {
+                    "name": "Originating Transaction ID",
+                    "mnem": "OTXID",
+                    "layer": "MAP_Phase2",
+                    "dest": "cdr_buffer",
+                    "dest_field": "2",
+                    "pos": 32,
+                    "length": 4
+                }
+            ],
+            "msg_template": "8335411900098003071204C3C900F40BD30000F40000800000000071656F4804000000004904000000006C61A10602010002011FA137020100020122A02F802800000000000000000000000000000000000000000000000000000000000000000000000000000000A103800100A106020100020137A106020100020137A106020100020137A106020100020137",
+            "timeout": 15
+        },
+        {
+            "name": "Timeout",
+            "type": "timer",
+            "duration": 3000
+        },
+        {
+            "name": "ANS",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Point Code",
+                    "mnem": "DPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 1,
+                    "length": 140000
+                },
+                {
+                    "name": "Origination Point Code",
+                    "mnem": "OPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 220000,
+                    "length": 140000
+                },
+                {
+                    "name": "Called Party Address: Signalling Point Code ",
+                    "mnem": "SPC",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 12,
+                    "length": 2
+                },
+                {
+                    "name": "Called Party Address: Subsystem Number",
+                    "mnem": "SSN",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "SSN",
+                    "pos": 14,
+                    "length": 1
+                },
+                {
+                    "name": "Calling Party Address: Signalling Point Code ",
+                    "mnem": "SPC:1",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 17,
+                    "length": 2
+                },
+                {
+                    "name": "Calling Party Address: Subsystem Number",
+                    "mnem": "SSN:1",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "SSN",
+                    "pos": 19,
+                    "length": 1
+                },
+                {
+                    "name": "Originating Transaction ID",
+                    "mnem": "OTXID",
+                    "layer": "MAP_Phase2",
+                    "source": "cdr_buffer",
+                    "src_field": "1",
+                    "pos": 25,
+                    "length": 4
+                },
+                {
+                    "name": "Destination Transaction ID",
+                    "mnem": "WD003",
+                    "layer": "MAP_Phase2",
+                    "source": "cdr_buffer",
+                    "src_field": "2",
+                    "pos": 31,
+                    "length": 4
+                }
+            ],
+            "exports": [],
+            "msg_template": "8335411900098003070B04C33501F404C30000F42765254804000000004904000000006C17A115020102020118300D800107A303810102A403800101"
+        },
+        {
+            "name": "Timeout",
+            "type": "timer",
+            "duration": 900
+        },
+        {
+            "name": "ACR_1",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Point Code",
+                    "mnem": "DPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 1,
+                    "length": 140000
+                },
+                {
+                    "name": "Origination Point Code",
+                    "mnem": "OPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 220000,
+                    "length": 140000
+                },
+                {
+                    "name": "Called Party Address: Signalling Point Code ",
+                    "mnem": "SPC",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 12,
+                    "length": 2
+                },
+                {
+                    "name": "Calling Party Address: Signalling Point Code ",
+                    "mnem": "SPC:1",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 17,
+                    "length": 2
+                },
+                {
+                    "name": "Destination Transaction ID",
+                    "mnem": "WD003",
+                    "layer": "MAP_Phase2",
+                    "source": "cdr_buffer",
+                    "src_field": "2",
+                    "pos": 31,
+                    "length": 4
+                },
+                {
+                    "name": "Invoke Tag: TNT Value",
+                    "mnem": "BINV*OP003*ACR02*TI03*TNT01",
+                    "layer": "MAP_Phase2",
+                    "source": "database",
+                    "src_field": "Time_1",
+                    "pos": 58,
+                    "length": 2
+                }
+            ],
+            "exports": [],
+            "msg_template": "83354119E0090103070B04433501F304436500F34665444804000000004904000000006C36A134020100020124042CA02AA003810101A104800202F8820101A41A3018060A2B0C0288530303020800A10A04080241706201947508"
+        },
+        {
+            "name": "AC_1",
+            "type": "rx",
+            "imports": [],
+            "exports": [],
+            "msg_template": "8335411900098003071204C3C900F40BD30000F40000800000000071656F4804000000004904000000006C61A10602010002011FA137020100020122A02F802800000000000000000000000000000000000000000000000000000000000000000000000000000000A103800100A106020100020137A106020100020137A106020100020137A106020100020137",
+            "timeout": 15
+        },
+        {
+            "name": "Timeout",
+            "type": "timer",
+            "duration": 5000
+        },
+        {
+            "name": "ACR",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Point Code",
+                    "mnem": "DPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 1,
+                    "length": 140000
+                },
+                {
+                    "name": "Origination Point Code",
+                    "mnem": "OPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 220000,
+                    "length": 140000
+                },
+                {
+                    "name": "Called Party Address: Signalling Point Code ",
+                    "mnem": "SPC",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 12,
+                    "length": 2
+                },
+                {
+                    "name": "Called Party Address: Subsystem Number",
+                    "mnem": "SSN",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "SSN",
+                    "pos": 14,
+                    "length": 1
+                },
+                {
+                    "name": "Calling Party Address: Signalling Point Code ",
+                    "mnem": "SPC:1",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 17,
+                    "length": 2
+                },
+                {
+                    "name": "Calling Party Address: Subsystem Number",
+                    "mnem": "SSN:1",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "SSN",
+                    "pos": 19,
+                    "length": 1
+                },
+                {
+                    "name": "Originating Transaction ID",
+                    "mnem": "OTXID",
+                    "layer": "MAP_Phase2",
+                    "source": "cdr_buffer",
+                    "src_field": "1",
+                    "pos": 25,
+                    "length": 4
+                },
+                {
+                    "name": "Destination Transaction ID",
+                    "mnem": "WD003",
+                    "layer": "MAP_Phase2",
+                    "source": "cdr_buffer",
+                    "src_field": "2",
+                    "pos": 31,
+                    "length": 4
+                },
+                {
+                    "name": "Invoke Tag: TNT Value",
+                    "mnem": "BINV*OP003*ACR02*TI03*TNT01",
+                    "layer": "MAP_Phase2",
+                    "source": "database",
+                    "src_field": "Time",
+                    "pos": 58,
+                    "length": 3
+                }
+            ],
+            "exports": [],
+            "msg_template": "8335411900098003070B04C33501F404C30000F42B65294804000000004904000000006C1BA1190201000201240411A00FA003810102A10580030008E9820100"
+        },
+        {
+            "name": "DISC",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Point Code",
+                    "mnem": "DPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 1,
+                    "length": 140000
+                },
+                {
+                    "name": "Origination Point Code",
+                    "mnem": "OPC",
+                    "layer": "MTP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 220000,
+                    "length": 140000
+                },
+                {
+                    "name": "Called Party Address: Signalling Point Code ",
+                    "mnem": "SPC",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "1",
+                    "pos": 12,
+                    "length": 2
+                },
+                {
+                    "name": "Called Party Address: Subsystem Number",
+                    "mnem": "SSN",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "SSN",
+                    "pos": 14,
+                    "length": 1
+                },
+                {
+                    "name": "Calling Party Address: Signalling Point Code ",
+                    "mnem": "SPC:1",
+                    "layer": "SCCP",
+                    "source": "entity",
+                    "src_field": "2",
+                    "pos": 17,
+                    "length": 2
+                },
+                {
+                    "name": "Calling Party Address: Subsystem Number",
+                    "mnem": "SSN:1",
+                    "layer": "SCCP",
+                    "source": "database",
+                    "src_field": "SSN",
+                    "pos": 19,
+                    "length": 1
+                },
+                {
+                    "name": "Originating Transaction ID",
+                    "mnem": "OTXID",
+                    "layer": "MAP_Phase2",
+                    "source": "cdr_buffer",
+                    "src_field": "1",
+                    "pos": 25,
+                    "length": 4
+                },
+                {
+                    "name": "Destination Transaction ID",
+                    "mnem": "WD003",
+                    "layer": "MAP_Phase2",
+                    "source": "cdr_buffer",
+                    "src_field": "2",
+                    "pos": 31,
+                    "length": 4
+                }
+            ],
+            "exports": [],
+            "msg_template": "8335411900098003070B04C33501F404C30000F42B65294804000000004904000000006C1BA1190201040201183011800109A202A700A303810102A403800100"
+        },
+        {
+            "name": "REL",
+            "type": "rx",
+            "imports": [],
+            "exports": [],
+            "msg_template": "8335411900098003070B04C33501F404C30000F410650E4804000000004904000000006C00",
+            "timeout": 15
+        }
+    ]
+}

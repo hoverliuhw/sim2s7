@@ -1,0 +1,183 @@
+{
+    "sigstd": "CCITT-SS7",
+    "database": {
+        "rk": {
+            "type": "hex",
+            "value": "00000047"
+        },
+        "clg": {
+            "type": "phonenumber",
+            "value": "974708992240"
+        },
+        "cld": {
+            "type": "phonenumber",
+            "value": "977981773427"
+        },
+        "gta": {
+            "type": "phonenumber",
+            "value": "97477920142"
+        },
+        "time_1": {
+            "type": "hex",
+            "value": "04b0"
+        },
+        "time_2": {
+            "type": "hex",
+            "value": "000e10"
+        },
+        "state_machine_name": "vfq cml2 og with 2 acrs",
+        "description": "this for v3 sim2s7.py, all values are the same as .pdb file, totally 5 types: decimal hex phonenumber pointcode text"
+    },
+    "states": [
+        {
+            "name": "Initial DP",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "service key",
+                    "pos": 100,
+                    "length": 4,
+                    "source": "database",
+                    "src_field": "rk"
+                },
+                {
+                    "name": "calling party number",
+                    "pos": 108,
+                    "length": 6,
+                    "source": "database",
+                    "src_field": "clg"
+                }
+            ],
+            "exports": [],
+            "msg_template": "8335413200098003071404c33501f30dd3c900f3000080797497024102a162819e4804010000006b2d282b060700118605010101a020601e80020780a109060704000001003201be0d280b810930078001058202057b6c67a165020100020100305d800400000047830884117974809922048a08000031178870720097029181bb04800280909c01029f320821436587092143f5bf34098107812143658709219f3607214365870921439f3807917997187743729f39080241701301240100"
+        },
+        {
+            "name": "RR BCSM/AC",
+            "type": "rx",
+            "imports": [],
+            "exports": [],
+            "msg_template": "83c9404d90098103071204c3c900f30b9292001104797497028005bb6581b84804000000734904010000006b2a2828060700118605010101a01d611b80020780a109060704000001003201a203020100a305a1030201006c7ea165020102020117305da05b300b800107810101a203800102300b800109810100a203800101300b800109810100a2038001023006800104810100300b800105810100a2038001023010800106810100a203800102be0381013c300b80010a810101a203800101a115020103020123300d8006a00480020960a203800101"
+        },
+        {
+            "name": "Continue",
+            "type": "rx",
+            "imports": [],
+            "exports": [
+                {
+                    "name": "Originating Transaction ID",
+                    "pos": 32,
+                    "length": 4,
+                    "dest": "cdr_buffer",
+                    "dest_field": "2"
+                }
+            ],
+            "msg_template": "83c9404d90098103071204c3c900f30b92920011047974970280053e653c4804000000734904010000006c2ea124020104020122041ca01a801307000100020100072079748099220403000100a103800101a10602010502011f"
+        },
+        {
+            "name": "O Answer",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Transaction ID",
+                    "pos": 31,
+                    "length": 4,
+                    "source": "cdr_buffer",
+                    "src_field": "2"
+                }
+            ],
+            "exports": [],
+            "msg_template": "8335413200098003070b04c33501f304c3c900f32765254804000000004904000000736c17a115020102020118300d800107a303810102a403800101"
+        },
+        {
+            "name": "10s Timer",
+            "type": "timer",
+            "duration": 10000
+        },
+        {
+            "name": "1st ACR in 1/10s",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Transaction ID",
+                    "pos": 31,
+                    "length": 4,
+                    "source": "cdr_buffer",
+                    "src_field": "2"
+                },
+                {
+                    "name": "TimeIfNoTariffSwitch",
+                    "pos": 58,
+                    "length": 2,
+                    "source": "database",
+                    "src_field": "time_1"
+                }
+            ],
+            "exports": [],
+            "msg_template": "83354132e0090103070b04433501f30443c900f34665444804000000004904000000736c36a134020100020124042ca02aa003810101a104800204b0820101a41a3018060a2b0c0288530303020800a10a04080241706201947508"
+        },
+        {
+            "name": "AC",
+            "type": "rx",
+            "imports": [],
+            "exports": [],
+            "msg_template": "83c9404d9009810307120443c900f30b12920011047974970280052765254804000000734904010000006c17a115020106020123300d8006a00480020960a203800101"
+        },
+        {
+            "name": "5s Timer",
+            "type": "timer",
+            "duration": 5000
+        },
+        {
+            "name": "Final ACR in 1/10s",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Transaction ID",
+                    "pos": 31,
+                    "length": 4,
+                    "source": "cdr_buffer",
+                    "src_field": "2"
+                },
+                {
+                    "name": "TimeIfNoTariffSwitch",
+                    "pos": 58,
+                    "length": 3,
+                    "source": "database",
+                    "src_field": "time_2"
+                }
+            ],
+            "exports": [],
+            "msg_template": "8335413200098003070b04c33501f304c3c900f32b65294804000000004904000000736c1ba1190201000201240411a00fa003810102a1058003000960820100"
+        },
+        {
+            "name": "O Disconnect",
+            "type": "tx",
+            "imports": [
+                {
+                    "name": "Destination Transaction ID",
+                    "pos": 31,
+                    "length": 4,
+                    "source": "cdr_buffer",
+                    "src_field": "2"
+                }
+            ],
+            "exports": [],
+            "msg_template": "8335413200098003070b04c33501f304c3c900f32b65294804000000004904000000736c1ba1190201040201183011800109a202a700a303810102a403800100"
+        },
+        {
+            "name": "Release Call",
+            "type": "rx",
+            "imports": [],
+            "exports": [],
+            "msg_template": "83c9404d90090103071204c3c900f30b92920011047974970280051664144904010000006c0ca10a0201070201160402c090"
+        },
+        {
+            "name": "the last state",
+            "type": "tx",
+            "msg_template": "",
+            "imports": [],
+            "exports": []
+        }
+    ],
+    "schema_version": "1.0"
+}
